@@ -24,7 +24,7 @@ public class JSONObject {
         int i = 0;
         for (String key : json.keySet()) {
             if (json.get(key) instanceof JSONArray) {
-                string += "\"" + key + "\":[" + json.get(key).toString();
+                string += "\"" + key + "\":" + json.get(key).toString();
             } else if (json.get(key) instanceof JSONObject) {
                 string += "\"" + key + "\":" + json.get(key).toString();
             } else if (json.get(key) instanceof String) {
@@ -50,7 +50,7 @@ public class JSONObject {
         int indentNumber = 0;
 
         for (int j = 0; j < JSONString.length; j++) {
-            if (JSONString[j].contains("}") || JSONString[j].contains("]")) {
+            if ((JSONString[j].contains("}") || JSONString[j].contains("]")) && !(JSONString[j].contains("{") || JSONString[j].contains("["))) {
                 indentNumber--;
             }
             String intended = "";
@@ -58,7 +58,7 @@ public class JSONObject {
                 intended += indent;
             }
             JSONString[j] = intended + JSONString[j];
-            if (JSONString[j].contains("{") || JSONString[j].contains("[")) {
+            if ((JSONString[j].contains("{") || JSONString[j].contains("[")) && !(JSONString[j].contains("}") || JSONString[j].contains("]") )) {
                 indentNumber++;
             }
         }
