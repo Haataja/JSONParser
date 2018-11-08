@@ -21,7 +21,7 @@ public class JSONArray {
         String returned = "[";
         for (int i = 0; i < arrayList.size(); i++) {
             if (arrayList.get(i) instanceof String) {
-                returned += "\"" + arrayList.get(i) + "\"";
+                returned += "\n\"" + arrayList.get(i) + "\"";
             } else if (arrayList.get(i) instanceof JSONObject || arrayList.get(i) instanceof JSONArray) {
                 returned += "\n" + arrayList.get(i).toString();
             } else {
