@@ -1,13 +1,13 @@
 package fi.tamk.tiko;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class JSONObject {
     private Map<String, Object> json;
 
     public JSONObject() {
-        json = new HashMap<String, Object>();
+        json = new LinkedHashMap<String, Object>();
     }
 
     public void put(String key, Object value) {
