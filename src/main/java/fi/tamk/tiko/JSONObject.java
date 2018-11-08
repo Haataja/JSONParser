@@ -18,6 +18,10 @@ public class JSONObject {
         return json.get(key);
     }
 
+    public Map<String,Object> getJson(){
+        return json;
+    }
+
     @Override
     public String toString() {
         String string = "{\n";
