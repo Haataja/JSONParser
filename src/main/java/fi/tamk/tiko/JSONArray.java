@@ -25,11 +25,13 @@ public class JSONArray {
             } else if (arrayList.get(i) instanceof JSONObject || arrayList.get(i) instanceof JSONArray) {
                 returned += "\n" + arrayList.get(i).toString();
             } else {
-                returned += arrayList.get(i);
+                returned += "\n" + arrayList.get(i);
             }
             if (i < arrayList.size() - 1) {
                 returned += ",";
-            } else if (arrayList.get(i) instanceof JSONObject){
+            } else if (arrayList.get(i) instanceof JSONObject) {
+                returned += "\n";
+            } else {
                 returned += "\n";
             }
         }
