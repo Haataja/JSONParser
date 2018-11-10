@@ -7,11 +7,15 @@
     <groupId>fi.tamk.tiko.haataja</groupId>
     <artifactId>json-parser</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
     <build>
         <plugins>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
+                <version>1.5.0</version>
                 <configuration>
                     <mainClass>fi.tamk.tiko.Main</mainClass>
                 </configuration>
@@ -19,6 +23,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.6.0</version>
                 <configuration>
                     <source>8</source>
                     <target>8</target>

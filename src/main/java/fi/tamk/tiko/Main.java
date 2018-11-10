@@ -1,14 +1,11 @@
 package fi.tamk.tiko;
 
-import fi.tamk.tiko.read.Parser;
-
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import fi.tamk.tiko.write.JSONArray;
+import fi.tamk.tiko.write.JSONObject;
 
 public class Main {
     public static void main(String[] args){
-        /*JSONObject owner = new JSONObject();
+        JSONObject owner = new JSONObject();
         owner.put("nimi","Hanna");
         owner.put("ika", 26);
         JSONArray array = new JSONArray();
@@ -20,13 +17,13 @@ public class Main {
         kapu.put("Name","Kapu");
         kapu.put("ika",4);
         kapu.put("paino",9.5);
-        array.add("kapu");
-        array.add("kiivi");
+        //array.add("kapu");
+        //array.add("kiivi");
         owner.put("pets",array);
         owner.put("kiivi",kiivi);
-        System.out.println(owner.toJsonString());*/
+        System.out.println(owner.toJsonString());
 
-        String text = "";
+        /*String text = "";
         try{
             text = new String(Files.readAllBytes(Paths.get(ClassLoader.getSystemResource("jotain.json").toURI())));
         } catch (Exception e){
@@ -40,8 +37,8 @@ public class Main {
             System.out.println(key);
             System.out.println(object.get(key));
         }*/
-        System.out.println(object.toJsonString());
-        System.out.println(((JSONArray)object.get("pets")).get(0));
+        /*System.out.println(object.toJsonString());
+        System.out.println(((JSONArray)object.get("pets")).get(0));*/
 
     }
 }

@@ -1,4 +1,4 @@
-package fi.tamk.tiko;
+package fi.tamk.tiko.write;
 
 import java.util.ArrayList;
 

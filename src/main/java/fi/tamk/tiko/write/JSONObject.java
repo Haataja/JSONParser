@@ -1,4 +1,4 @@
-package fi.tamk.tiko;
+package fi.tamk.tiko.write;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -7,7 +7,7 @@ public class JSONObject {
     private Map<String, Object> json;
 
     public JSONObject() {
-        json = new LinkedHashMap<String, Object>();
+        json = new LinkedHashMap<>();
     }
 
     public void put(String key, Object value) {
@@ -16,10 +16,6 @@ public class JSONObject {
 
     public Object get(String key) {
         return json.get(key);
-    }
-
-    public Map<String,Object> getJson(){
-        return json;
     }
 
     @Override

@@ -1,11 +1,11 @@
 package fi.tamk.tiko.read;
 
-import fi.tamk.tiko.JSONArray;
-import fi.tamk.tiko.JSONObject;
+import fi.tamk.tiko.write.JSONArray;
+import fi.tamk.tiko.write.JSONObject;
 
 
 public class Parser {
-    JSONObject returnedObject;
+    private JSONObject returnedObject;
 
     public JSONObject parse(String text) {
         String[] lines = text.split("\n");
@@ -97,16 +97,10 @@ public class Parser {
                     double valueDouble = Double.parseDouble(value);
                     return valueDouble;
                 } catch (Exception ex) {
-                    // TODO: logger
                     System.out.println("Unknown error: "+ ex.getMessage());
                 }
             }
         }
-        return null;
-    }
-
-    private Object parseJSONObject(String[] values, int index) {
-
         return null;
     }
 }
