@@ -6,7 +6,7 @@ public class JSONArray {
     private ArrayList<Object> arrayList;
 
     public JSONArray() {
-        arrayList = new ArrayList<Object>();
+        arrayList = new ArrayList<>();
     }
 
     public void add(Object o) {
@@ -37,5 +37,9 @@ public class JSONArray {
         }
         returned += "]";
         return returned;
+    }
+
+    public int length(){
+        return arrayList.size();
     }
 }
