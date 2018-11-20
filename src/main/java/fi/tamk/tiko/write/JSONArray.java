@@ -3,7 +3,12 @@ package fi.tamk.tiko.write;
 import java.util.ArrayList;
 
 /**
+ * JSONArray has some trait of an array but it can hold any
+ * {@link Object}s. To get objects from JSONArray use {@link #get(int)}-method.
  *
+ * @author Hanna Haataja <hanna.haataja@cs.tamk.fi>
+ * @version 1.0, 11/20/2018
+ * @since 1.0
  */
 public class JSONArray {
     private ArrayList<Object> arrayList;
@@ -59,7 +64,7 @@ public class JSONArray {
     }
 
     /**
-     * Returns the lenght of the JSONArray.
+     * Returns the length of the JSONArray.
      * @return the size of the JSONArray.
      */
     public int length(){

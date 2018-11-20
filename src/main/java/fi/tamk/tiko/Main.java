@@ -1,11 +1,16 @@
 package fi.tamk.tiko;
 
+import fi.tamk.tiko.read.Parser;
 import fi.tamk.tiko.write.JSONArray;
 import fi.tamk.tiko.write.JSONObject;
 
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
 public class Main {
     public static void main(String[] args){
-        JSONObject owner = new JSONObject();
+        System.out.println("Author: Hanna Haataja");
+        /*JSONObject owner = new JSONObject();
         owner.put("nimi","Hanna");
         owner.put("ika", 26);
         JSONArray array = new JSONArray();
@@ -28,7 +33,8 @@ public class Main {
         owner.put("kiivi",kiivi);
         System.out.println(owner.toJsonString());
 
-        /*String text = "";
+
+        String text = "";
         try{
             text = new String(Files.readAllBytes(Paths.get(ClassLoader.getSystemResource("jotain.json").toURI())));
         } catch (Exception e){
@@ -43,7 +49,10 @@ public class Main {
             System.out.println(object.get(key));
         }*/
         /*System.out.println(object.toJsonString());
-        System.out.println(((JSONArray)object.get("pets")).get(0));*/
+        System.out.println(((JSONObject)object.get("kiivi")).get("ika"));
+        if((boolean)((JSONObject)object.get("kiivi")).get("ika")){
+            System.out.println("YES IM A BOOLEAN");
+        }*/
 
     }
 }

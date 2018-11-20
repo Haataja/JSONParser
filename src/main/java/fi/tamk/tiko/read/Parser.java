@@ -4,7 +4,24 @@ import fi.tamk.tiko.write.JSONArray;
 import fi.tamk.tiko.write.JSONObject;
 
 /**
+ * <h1>JSON parser</h1>
+ * The reading component of the JSON-parser library. Parser has only one job
+ * to read {@link String} and break it down to {@link JSONObject} that contains
+ * primitive values, {@link JSONObject}s and {@link JSONArray}s.
+ * <p>
+ * To use parser read JSON-file any way you want and convert it to {@link String} to
+ * pass to parse-method.
+ * <p>
+ * For example:
+ * String text = new String(Files.readAllBytes(Paths.get(file.getAbsolutePath())));
+ * Parser parser = new Parser();
+ * JSONObject object = parser.parse(text);
+ * Output JSONObject holds all data structure that was defined in the file. To get objects from
+ * JSONObject call {@link JSONObject#get(String)}, e.g. boolean value = (boolean) object.get("key");
  *
+ * @author Hanna Haataja <hanna.haataja@cs.tamk.fi>
+ * @version 1.0, 11/20/2018
+ * @since 1.0
  */
 public class Parser {
     private JSONObject returnedObject;
@@ -104,7 +121,12 @@ public class Parser {
                     double valueDouble = Double.parseDouble(value);
                     return valueDouble;
                 } catch (Exception ex) {
-                    System.out.println("Unknown error: "+ ex.getMessage());
+                    try {
+                        Boolean valueBoolean = Boolean.parseBoolean(value);
+                        return valueBoolean;
+                    }catch (Exception er){
+                        System.out.println("Unknown error: "+ ex.getMessage());
+                    }
                 }
             }
         }

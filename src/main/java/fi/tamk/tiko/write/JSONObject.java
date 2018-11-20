@@ -4,7 +4,34 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
+ * <h2>JSONObject</h2>
+ * JSONObject can be used to write or read JSON-files.
  *
+ * <h3>Writing</h3>
+ * To write an JSON-file use {@link #put(String, Object)} to map
+ * keys and values to each others. Value can be any of the primitives or
+ * {@link JSONObject} or {@link JSONArray}. Use {@link #toJsonString()}-method to
+ * get {@link String} in JSON format. You can write it to file using any method you choose.
+ * <p>
+ * For example: JSONObject object = new JSONObject();
+ * object.put("Auhtor","Hanna Haataja");
+ * FileWriter fileWriter = new FileWriter(file);
+ * fileWriter.write(object.toJsonString());
+ * fileWriter.close();
+ * File now contains:
+ * {
+ *     "Auhtor":"Hanna Haataja"
+ * }
+ *
+ * <h3>Reading</h3>
+ * {@link JSONObject} is given as a return object by {@link fi.tamk.tiko.read.Parser#parse(String)}.
+ * To get objects from the JSONObject you have to know the key of the value. Returned value
+ * is an {@link Object}, to unlock the potential of that value just cast it to primitive value,
+ * {@link JSONArray} or JSONObject, e.g. boolean value = (boolean) object.get("key");
+ *
+ * @author Hanna Haataja <hanna.haataja@cs.tamk.fi>
+ * @version 1.0, 11/20/2018
+ * @since 1.0
  */
 public class JSONObject {
     private Map<String, Object> json;
