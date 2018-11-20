@@ -12,14 +12,14 @@ import fi.tamk.tiko.write.JSONObject;
  * To use parser read JSON-file any way you want and convert it to {@link String} to
  * pass to parse-method.
  * <p>
- * For example:
- * String text = new String(Files.readAllBytes(Paths.get(file.getAbsolutePath())));
- * Parser parser = new Parser();
- * JSONObject object = parser.parse(text);
+ * For example:<p>
+ * String text = new String(Files.readAllBytes(Paths.get(file.getAbsolutePath())));<p>
+ * Parser parser = new Parser();<p>
+ * JSONObject object = parser.parse(text);<p>
  * Output JSONObject holds all data structure that was defined in the file. To get objects from
  * JSONObject call {@link JSONObject#get(String)}, e.g. boolean value = (boolean) object.get("key");
  *
- * @author Hanna Haataja <hanna.haataja@cs.tamk.fi>
+ * @author Hanna Haataja, hanna.haataja@cs.tamk.fi
  * @version 1.0, 11/20/2018
  * @since 1.0
  */

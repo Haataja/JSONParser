@@ -13,15 +13,11 @@ import java.util.Map;
  * {@link JSONObject} or {@link JSONArray}. Use {@link #toJsonString()}-method to
  * get {@link String} in JSON format. You can write it to file using any method you choose.
  * <p>
- * For example: JSONObject object = new JSONObject();
- * object.put("Auhtor","Hanna Haataja");
- * FileWriter fileWriter = new FileWriter(file);
- * fileWriter.write(object.toJsonString());
+ * For example: JSONObject object = new JSONObject();<p>
+ * object.put("Auhtor","Hanna Haataja");<p>
+ * FileWriter fileWriter = new FileWriter(file);<p>
+ * fileWriter.write(object.toJsonString());<p>
  * fileWriter.close();
- * File now contains:
- * {
- *     "Auhtor":"Hanna Haataja"
- * }
  *
  * <h3>Reading</h3>
  * {@link JSONObject} is given as a return object by {@link fi.tamk.tiko.read.Parser#parse(String)}.
@@ -29,7 +25,7 @@ import java.util.Map;
  * is an {@link Object}, to unlock the potential of that value just cast it to primitive value,
  * {@link JSONArray} or JSONObject, e.g. boolean value = (boolean) object.get("key");
  *
- * @author Hanna Haataja <hanna.haataja@cs.tamk.fi>
+ * @author Hanna Haataja, hanna.haataja@cs.tamk.fi
  * @version 1.0, 11/20/2018
  * @since 1.0
  */

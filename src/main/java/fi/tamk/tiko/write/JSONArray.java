@@ -6,7 +6,7 @@ import java.util.ArrayList;
  * JSONArray has some trait of an array but it can hold any
  * {@link Object}s. To get objects from JSONArray use {@link #get(int)}-method.
  *
- * @author Hanna Haataja <hanna.haataja@cs.tamk.fi>
+ * @author Hanna Haataja, hanna.haataja@cs.tamk.fi
  * @version 1.0, 11/20/2018
  * @since 1.0
  */
