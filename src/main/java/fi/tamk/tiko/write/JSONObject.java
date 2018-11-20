@@ -3,17 +3,33 @@ package fi.tamk.tiko.write;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+/**
+ *
+ */
 public class JSONObject {
     private Map<String, Object> json;
 
+    /**
+     * Constructor of the class.
+     */
     public JSONObject() {
         json = new LinkedHashMap<>();
     }
 
+    /**
+     * Puts key-value pair to the object.
+     * @param key The key with which the specified value is to be associated.
+     * @param value value to be associated with the specified key.
+     */
     public void put(String key, Object value) {
         json.put(key, value);
     }
 
+    /**
+     * Returns the value to which the specified key is mapped, or null if this map contains no mapping for the key.
+     * @param key the key whose associated value is to be returned.
+     * @return the value to which the specified key is mapped, or null if this map contains no mapping for the key.
+     */
     public Object get(String key) {
         return json.get(key);
     }
@@ -43,6 +59,10 @@ public class JSONObject {
         return string;
     }
 
+    /**
+     * Formats the JSONObject to JSON-format that can be written in the JSON-file.
+     * @return {@link String} in JSON-format.
+     */
     public String toJsonString() {
         String[] JSONString = toString().split("\n");
         String returned = "";

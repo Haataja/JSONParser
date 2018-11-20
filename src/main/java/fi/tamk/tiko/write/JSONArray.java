@@ -2,21 +2,40 @@ package fi.tamk.tiko.write;
 
 import java.util.ArrayList;
 
+/**
+ *
+ */
 public class JSONArray {
     private ArrayList<Object> arrayList;
 
+    /**
+     * Constructor of the class.
+     */
     public JSONArray() {
         arrayList = new ArrayList<>();
     }
 
+    /**
+     * Adds object to JSONArray.
+     * @param o Object to be added.
+     */
     public void add(Object o) {
         arrayList.add(o);
     }
 
+    /**
+     * Get the object from JSONArray by the index.
+     * @param index index of the object desired.
+     * @return The object in the JSONArray.
+     */
     public Object get(int index) {
         return arrayList.get(index);
     }
 
+    /**
+     * Returns the {@link String} representation of the JSONArray.
+     * @return String representation.
+     */
     public String toString() {
         String returned = "[";
         for (int i = 0; i < arrayList.size(); i++) {
@@ -39,6 +58,10 @@ public class JSONArray {
         return returned;
     }
 
+    /**
+     * Returns the lenght of the JSONArray.
+     * @return the size of the JSONArray.
+     */
     public int length(){
         return arrayList.size();
     }

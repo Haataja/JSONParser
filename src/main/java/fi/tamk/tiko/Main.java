@@ -9,6 +9,11 @@ public class Main {
         owner.put("nimi","Hanna");
         owner.put("ika", 26);
         JSONArray array = new JSONArray();
+        JSONArray kissa = new JSONArray();
+        kissa.add(false);
+        kissa.add(null);
+        kissa.add(true);
+        array.add(kissa);
         JSONObject kiivi = new JSONObject();
         kiivi.put("Name","Kiivi");
         kiivi.put("ika",5);
@@ -17,8 +22,8 @@ public class Main {
         kapu.put("Name","Kapu");
         kapu.put("ika",4);
         kapu.put("paino",9.5);
-        //array.add("kapu");
-        //array.add("kiivi");
+        array.add(kapu);
+        array.add(kiivi);
         owner.put("pets",array);
         owner.put("kiivi",kiivi);
         System.out.println(owner.toJsonString());

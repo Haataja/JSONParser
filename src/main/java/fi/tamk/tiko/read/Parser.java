@@ -3,10 +3,17 @@ package fi.tamk.tiko.read;
 import fi.tamk.tiko.write.JSONArray;
 import fi.tamk.tiko.write.JSONObject;
 
-
+/**
+ *
+ */
 public class Parser {
     private JSONObject returnedObject;
 
+    /**
+     * Parses String to one JSONObject that can hold JSONObjects and JSONArrays.
+     * @param text text that is parsed.
+     * @return JSONObject that holds all the objects form the String.
+     */
     public JSONObject parse(String text) {
         String[] lines = text.split("\n");
         returnedObject = new JSONObject();
