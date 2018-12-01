@@ -28,81 +28,81 @@ public class Parser {
 
     /**
      * Parses String to one JSONObject that can hold JSONObjects and JSONArrays.
+     *
      * @param text text that is parsed.
      * @return JSONObject that holds all the objects form the String.
      */
     public JSONObject parse(String text) {
-        String[] lines = text.split("\n");
+        text = text.replace("\n","");
+        text = text.substring(1, text.length() - 1);
         returnedObject = new JSONObject();
-
-        for (int i = 1; i < lines.length - 1; i++) {
+        String[] lines = text.split(",");
+        for (int i = 0; i < lines.length; i++) {
             String[] split = lines[i].split(":");
+            if (split.length > 2) {
+                split[1] = split[1] + ":" + split[2];
+            }
             String key = split[0].replace("\"", "").trim();
             if (split[1].contains("[")) {
                 JSONArray array = new JSONArray();
-                int j = i + 1;
+                int j = i;
+                lines[j] = lines[j].substring(split[0].length() + 1);
+                lines[j] = lines[j].replace("[", "");
                 boolean loop = true;
                 while (loop) {
                     if (lines[j].contains("{")) {
+                        lines[j] = lines[j].replace("{", "");
                         JSONObject object = new JSONObject();
                         boolean innerLoop = true;
-                        int k = j + 1;
+                        int k = j;
                         while (innerLoop) {
-                            String[] objectSplit = lines[k].split(":");
-                            String objectKey = objectSplit[0].replace("\"", "").trim();
-                            if (objectSplit[1].contains(",")) {
-                                object.put(objectKey,parseObject(objectSplit[1].replace(",", "")));
-                                k++;
-                            } else {
-                                object.put(objectKey,parseObject(objectSplit[1]));
-                                k++;
-                                if (lines[k].contains("}")) {
-                                    innerLoop = false;
-                                    if(lines[k + 1].contains("]")){
-                                        loop = false;
-                                    }
+                            if (lines[k].contains("}")) {
+                                innerLoop = false;
+                                lines[k] = lines[k].replace("}", "");
+                                if (lines[k].contains("]")) {
+                                    loop = false;
+                                    lines[k] = lines[k].replace("]", "");
                                 }
                             }
+                            String[] objectSplit = lines[k].split(":");
+                            String objectKey = objectSplit[0].replace("\"", "").trim();
+                            object.put(objectKey, parseObject(objectSplit[1]));
+                            k++;
                         }
                         array.add(object);
-                        j = k + 1;
+                        j = k;
                     } else {
-                        if (lines[j].contains(",")) {
-                            array.add(parseObject(lines[j].replace(",", "")));
-                            j++;
-                        } else {
-                            array.add(parseObject(lines[j]));
-                            j++;
-                            if (lines[j].contains("]")) {
-                                loop = false;
-                            }
+                        if (lines[j].contains("]")) {
+                            lines[j] = lines[j].replace("]", "");
+                            loop = false;
                         }
+                        array.add(parseObject(lines[j]));
+                        j++;
                     }
                 }
                 returnedObject.put(key, array);
-                i = j;
+                i = j - 1;
             } else if (lines[i].contains("{")) {
+                lines[i] = lines[i].substring(split[0].length() + 1);
+                lines[i] = lines[i].replace("{", "");
+
                 JSONObject object = new JSONObject();
                 boolean innerLoop = true;
-                int k = i + 1;
+                int k = i;
                 while (innerLoop) {
+                    if (lines[k].contains("}")) {
+                        innerLoop = false;
+                        lines[k] = lines[k].replace("}", "");
+                    }
                     String[] objectSplit = lines[k].split(":");
                     String objectKey = objectSplit[0].replace("\"", "").trim();
-                    if (objectSplit[1].contains(",")) {
-                        object.put(objectKey,parseObject(objectSplit[1].replace(",", "")));
-                        k++;
-                    } else {
-                        object.put(objectKey,parseObject(objectSplit[1]));
-                        k++;
-                        if (lines[k].contains("}")) {
-                            innerLoop = false;
-                        }
-                    }
+                    object.put(objectKey, parseObject(objectSplit[1]));
+                    k++;
                 }
-                returnedObject.put(key,object);
-                i = k;
+                returnedObject.put(key, object);
+                i = k - 1;
             } else {
-                returnedObject.put(key, parseObject(split[1].replace(",","")));
+                returnedObject.put(key, parseObject(split[1]));
             }
         }
         return returnedObject;
@@ -124,8 +124,8 @@ public class Parser {
                     try {
                         Boolean valueBoolean = Boolean.parseBoolean(value);
                         return valueBoolean;
-                    }catch (Exception er){
-                        System.out.println("Unknown error: "+ ex.getMessage());
+                    } catch (Exception er) {
+                        System.out.println("Unknown error: " + ex.getMessage());
                     }
                 }
             }

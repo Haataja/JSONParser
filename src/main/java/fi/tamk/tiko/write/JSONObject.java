@@ -110,4 +110,8 @@ public class JSONObject {
         }
         return returned;
     }
+
+    public Map<String, Object> getJson() {
+        return json;
+    }
 }

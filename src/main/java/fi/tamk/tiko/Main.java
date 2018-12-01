@@ -34,7 +34,7 @@ public class Main {
         System.out.println(owner.toJsonString());
 
 
-        String text = "";
+        */String text = "";
         try{
             text = new String(Files.readAllBytes(Paths.get(ClassLoader.getSystemResource("jotain.json").toURI())));
         } catch (Exception e){
@@ -44,15 +44,16 @@ public class Main {
         //System.out.println(text);
         Parser parser = new Parser();
         JSONObject object = parser.parse(text);
+        System.out.println("HELLO:");
         /*for(String key:object.getJson().keySet()){
-            System.out.println(key);
+            System.out.print(key + " : ");
             System.out.println(object.get(key));
         }*/
-        /*System.out.println(object.toJsonString());
-        System.out.println(((JSONObject)object.get("kiivi")).get("ika"));
-        if((boolean)((JSONObject)object.get("kiivi")).get("ika")){
-            System.out.println("YES IM A BOOLEAN");
-        }*/
+        System.out.println(object.toJsonString());
+        //System.out.println(object.get("organization"));
+        //for(int i = 0; i < ((JSONArray) object.get("studentNumbers")).length(); i++){
+            //System.out.println(((JSONArray) object.get("studentnumbers")).get(i));
+       //}
 
     }
 }
