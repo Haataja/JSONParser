@@ -41,7 +41,8 @@ public class JSONObject {
 
     /**
      * Puts key-value pair to the object.
-     * @param key The key with which the specified value is to be associated.
+     *
+     * @param key   The key with which the specified value is to be associated.
      * @param value value to be associated with the specified key.
      */
     public void put(String key, Object value) {
@@ -50,6 +51,7 @@ public class JSONObject {
 
     /**
      * Returns the value to which the specified key is mapped, or null if this map contains no mapping for the key.
+     *
      * @param key the key whose associated value is to be returned.
      * @return the value to which the specified key is mapped, or null if this map contains no mapping for the key.
      */
@@ -63,13 +65,13 @@ public class JSONObject {
         int i = 0;
         for (String key : json.keySet()) {
             if (json.get(key) instanceof JSONArray) {
-                string += "\"" + key + "\":" + json.get(key).toString();
+                string += "\"" + key + "\": " + json.get(key).toString();
             } else if (json.get(key) instanceof JSONObject) {
-                string += "\"" + key + "\":" + json.get(key).toString();
+                string += "\"" + key + "\": " + json.get(key).toString();
             } else if (json.get(key) instanceof String) {
-                string += "\"" + key + "\":\"" + json.get(key) + "\"";
+                string += "\"" + key + "\": \"" + json.get(key) + "\"";
             } else {
-                string += "\"" + key + "\":" + json.get(key);
+                string += "\"" + key + "\": " + json.get(key);
             }
             if (i < json.keySet().size() - 1) {
                 string += ",\n";
@@ -84,6 +86,7 @@ public class JSONObject {
 
     /**
      * Formats the JSONObject to JSON-format that can be written in the JSON-file.
+     *
      * @return {@link String} in JSON-format.
      */
     public String toJsonString() {
@@ -101,17 +104,36 @@ public class JSONObject {
                 intended += indent;
             }
             JSONString[j] = intended + JSONString[j];
-            if ((JSONString[j].contains("{") || JSONString[j].contains("[")) && !(JSONString[j].contains("}") || JSONString[j].contains("]") )) {
+            if ((JSONString[j].contains("{") || JSONString[j].contains("[")) && !(JSONString[j].contains("}") || JSONString[j].contains("]"))) {
                 indentNumber++;
             }
         }
-        for (String string : JSONString) {
-            returned += string + "\n";
+        for (int i = 0; i < JSONString.length; i++) {
+            if (i < JSONString.length - 1) {
+                returned += JSONString[i] + System.getProperty("line.separator");
+            } else {
+                returned += JSONString[i];
+            }
         }
         return returned;
     }
 
-    public Map<String, Object> getJson() {
-        return json;
+    @Override
+    public boolean equals(Object o) {
+        boolean returned = true;
+        if (o == null || getClass() != o.getClass()){
+            returned = false;
+        } else if (o != this) {
+            JSONObject object = (JSONObject) o;
+            for (String key : json.keySet()) {
+                if (object.get(key) == null) {
+                    if(json.get(key) != null && !json.get(key).equals(object.get(key))){
+                        returned = false;
+                        break;
+                    }
+                }
+            }
+        }
+        return returned;
     }
 }

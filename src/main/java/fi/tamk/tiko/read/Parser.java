@@ -33,7 +33,7 @@ public class Parser {
      * @return JSONObject that holds all the objects form the String.
      */
     public JSONObject parse(String text) {
-        text = text.replace("\n","");
+        text = text.replace("\n", "");
         text = text.substring(1, text.length() - 1);
         returnedObject = new JSONObject();
         String[] lines = text.split(",");
@@ -112,6 +112,8 @@ public class Parser {
         value = value.trim();
         if (value.contains("\"")) {
             return value.replace("\"", "");
+        } else if (value.contains("null")) {
+            return null;
         } else {
             try {
                 int valueInt = Integer.parseInt(value);

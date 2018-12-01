@@ -1,0 +1,8 @@
+{
+  "key": "String",
+  "intKey": 44,
+  "doubleKey": 3.17,
+  "booleanKey": true,
+  "boolean": false,
+  "null": null
+}
