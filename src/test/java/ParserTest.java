@@ -115,7 +115,7 @@ public class ParserTest extends BaseTest{
         JSONArray array1 = new JSONArray();
         array1.add(array0);
         array1.add("dog");
-        array1.add("oose");
+        array1.add("mouse");
         array1.add("moose");
         array1.add("rat");
         JSONArray array2 = new JSONArray();

@@ -61,8 +61,8 @@ public class Parser {
     }
 
     private Object parseObject(String value) {
-        value = value.trim();
         value = value.replace("]", "");
+        value = value.trim();
         if (value.contains("\"")) {
             return value.replace("\"", "");
         } else if (value.contains("null")) {
@@ -131,7 +131,6 @@ public class Parser {
         lines[j] = lines[j].substring(indexOf + 1);
         boolean loop = true;
         while (loop) {
-            System.out.println(lines[j]);
             if (lines[j].contains("{")) {
                 j = parseJsonObject(j, lines, array);
                 if (lines[j - 1].contains("]")) {

@@ -74,4 +74,26 @@ public class JSONArray {
     public int length() {
         return arrayList.size();
     }
+
+    @Override
+    public boolean equals(Object o) {
+        boolean returned = true;
+        if (o == null || getClass() != o.getClass()) {
+            returned = false;
+        } else if (o != this) {
+            JSONArray object = (JSONArray) o;
+            for (int i = 0; i < arrayList.size(); i++) {
+                if (object.get(i) == null) {
+                    if (get(i) != null) {
+                        returned = false;
+                        break;
+                    }
+                } else if(!object.get(i).equals(get(i))){
+                    returned = false;
+                    break;
+                }
+            }
+        }
+        return returned;
+    }
 }
