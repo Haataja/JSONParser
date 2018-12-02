@@ -131,6 +131,7 @@ public class Parser {
         lines[j] = lines[j].substring(indexOf + 1);
         boolean loop = true;
         while (loop) {
+            System.out.println(lines[j]);
             if (lines[j].contains("{")) {
                 j = parseJsonObject(j, lines, array);
                 if (lines[j - 1].contains("]")) {
@@ -138,8 +139,12 @@ public class Parser {
                 }
             } else if (lines[j].contains("[")) {
                 j = parseArray(j, lines, array);
-                if (lines[j].contains("]]")) {
-                    loop = false;
+                if (lines[j].contains("]")) {
+                    int indexOfKet = lines[j].indexOf("]");
+                    lines[j] = lines[j].substring(indexOfKet + 1);
+                    if (lines[j].contains("]")) {
+                        loop = false;
+                    }
                 }
                 j++;
             } else {

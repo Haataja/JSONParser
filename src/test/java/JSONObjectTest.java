@@ -1,33 +1,10 @@
 import fi.tamk.tiko.write.JSONArray;
 import fi.tamk.tiko.write.JSONObject;
 import org.junit.Assert;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
-import java.nio.file.Files;
-import java.nio.file.Paths;
+public class JSONObjectTest extends BaseTest {
 
-public class JSONObjectTest {
-
-    private static String basic;
-    private static String objectInObject;
-    private static String arrayInObject;
-    private static String objectsInArray;
-    private static String wild;
-
-    @BeforeClass
-    public static void before() {
-        try {
-            basic = new String(Files.readAllBytes(Paths.get("src\\test\\resources\\basic.json")));
-            objectInObject = new String(Files.readAllBytes(Paths.get("src\\test\\resources\\objectInObject.json")));
-            arrayInObject = new String(Files.readAllBytes(Paths.get("src\\test\\resources\\arrayInObject.json")));
-            objectsInArray = new String(Files.readAllBytes(Paths.get("src\\test\\resources\\objectsInArray.json")));
-            wild = new String(Files.readAllBytes(Paths.get("src\\test\\resources\\wild.json")));
-        } catch (Exception e) {
-            System.out.println("Something went wrong: " + e.getMessage());
-            e.printStackTrace();
-        }
-    }
 
     @Test
     public void testBasic() {
@@ -53,6 +30,23 @@ public class JSONObjectTest {
         JSONObject o = new JSONObject();
         o.put("new_key", object);
         Assert.assertEquals(objectInObject, o.toJsonString());
+    }
+
+    @Test
+    public void testObjectInObjectInObject() {
+        JSONObject innerObject = new JSONObject();
+        innerObject.put("key", null);
+        innerObject.put("cat", "dog");
+        JSONObject object = new JSONObject();
+        object.put("key", innerObject);
+        object.put("intKey", 44);
+        object.put("doubleKey", 3.17);
+        object.put("booleanKey", true);
+        object.put("boolean", false);
+        object.put("null", null);
+        JSONObject o = new JSONObject();
+        o.put("new_key", object);
+        Assert.assertEquals(objectInObjectInObject, o.toJsonString());
     }
 
     @Test
@@ -97,7 +91,7 @@ public class JSONObjectTest {
     }
 
     @Test
-    public void testWild() {
+    public void testArrayInObjectInArray() {
         JSONObject data = new JSONObject();
         JSONArray intArray = new JSONArray();
         for (int i = 0; i < 10; i++) {
@@ -122,4 +116,64 @@ public class JSONObjectTest {
         o.put("data", data);
         Assert.assertEquals(wild, o.toJsonString());
     }
+
+    @Test
+    public void testObjectInArrayInObject() {
+        JSONObject object = new JSONObject();
+        objectInArray.put("qualifier", null);
+        object.put("key", objectInArray);
+        Assert.assertEquals(object.toJsonString(), objectInArrayInObject);
+    }
+
+    @Test
+    public void testArrayInArrayInArray() {
+        JSONArray array0 = new JSONArray();
+        array0.add(1.2);
+        array0.add(1.1);
+        JSONArray array1 = new JSONArray();
+        array1.add(array0);
+        array1.add("dog");
+        array1.add("mouse");
+        array1.add("moose");
+        array1.add("rat");
+        JSONArray array2 = new JSONArray();
+        for (int i = 1; i < 5; i++) {
+            array2.add(i);
+        }
+        JSONArray array3 = new JSONArray();
+        array3.add(true);
+        array3.add(array0);
+        JSONArray master = new JSONArray();
+        master.add(array1);
+        master.add(array2);
+        master.add(array3);
+        JSONObject object = new JSONObject();
+        object.put("data", master);
+        Assert.assertEquals(arrayInArrayInArray, object.toJsonString());
+    }
+    @Test
+    public void testArrayInArray() {
+        JSONArray array1 = new JSONArray();
+        array1.add("cat");
+        array1.add("dog");
+        array1.add("mouse");
+        array1.add("moose");
+        array1.add("rat");
+        JSONArray array2 = new JSONArray();
+        for (int i = 1; i < 5; i++) {
+            array2.add(i);
+        }
+        JSONArray array3 = new JSONArray();
+        array3.add(true);
+        array3.add(null);
+        JSONArray master = new JSONArray();
+        master.add(array1);
+        master.add(array2);
+        master.add(array3);
+        JSONObject object = new JSONObject();
+        object.put("data", master);
+        Assert.assertEquals(arrayInArray, object.toJsonString());
+    }
+
+
 }

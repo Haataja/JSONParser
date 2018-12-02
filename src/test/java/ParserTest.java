@@ -1,59 +1,9 @@
-import fi.tamk.tiko.read.Parser;
 import fi.tamk.tiko.write.JSONArray;
 import fi.tamk.tiko.write.JSONObject;
 import org.junit.Assert;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
-import java.nio.file.Files;
-import java.nio.file.Paths;
-
-public class ParserTest {
-
-
-    private static String basic;
-    private static String objectInObject;
-    private static String objectInObjectInObject;
-    private static String arrayInObject;
-    private static String objectsInArray;
-    private static String arrayInArray;
-    private static String objectInArrayInObject;
-    private static String wild;
-    private static Parser parser;
-    private static JSONObject objectInArray;
-
-    @BeforeClass
-    public static void before() {
-        parser = new Parser();
-        try {
-            basic = new String(Files.readAllBytes(Paths.get("src\\test\\resources\\basic.json")));
-            objectInObject = new String(Files.readAllBytes(Paths.get("src\\test\\resources\\objectInObject.json")));
-            arrayInObject = new String(Files.readAllBytes(Paths.get("src\\test\\resources\\arrayInObject.json")));
-            objectsInArray = new String(Files.readAllBytes(Paths.get("src\\test\\resources\\objectsInArray.json")));
-            wild = new String(Files.readAllBytes(Paths.get("src\\test\\resources\\wild.json")));
-            objectInObjectInObject = new String(Files.readAllBytes(Paths.get("src\\test\\resources\\objectInObjectInObject.json")));
-            arrayInArray = new String(Files.readAllBytes(Paths.get("src\\test\\resources\\arrayInArray.json")));
-            objectInArrayInObject = new String(Files.readAllBytes(Paths.get("src\\test\\resources\\objectInArrayInObject.json")));
-        } catch (Exception e) {
-            System.out.println("Something went wrong: " + e.getMessage());
-            e.printStackTrace();
-        }
-
-        JSONArray array = new JSONArray();
-        JSONObject object = new JSONObject();
-        object.put("key", "String");
-        object.put("intKey", 44);
-        object.put("doubleKey", 3.17);
-        object.put("booleanKey", true);
-        object.put("boolean", false);
-        object.put("null", null);
-        array.add(object);
-        array.add(object);
-        array.add(object);
-        JSONObject o = new JSONObject();
-        o.put("data", array);
-        objectInArray = o;
-    }
+public class ParserTest extends BaseTest{
 
     @Test
     public void testBasic() {
@@ -158,14 +108,14 @@ public class ParserTest {
 
     @Test
     public void testArrayInArrayInArray() {
-        JSONObject parsed = parser.parse(arrayInArray);
+        JSONObject parsed = parser.parse(arrayInArrayInArray);
         JSONArray array0 = new JSONArray();
         array0.add(1.2);
         array0.add(1.1);
         JSONArray array1 = new JSONArray();
         array1.add(array0);
         array1.add("dog");
-        array1.add("mouse");
+        array1.add("oose");
         array1.add("moose");
         array1.add("rat");
         JSONArray array2 = new JSONArray();

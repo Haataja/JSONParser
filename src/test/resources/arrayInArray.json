@@ -1,1 +1,21 @@
-{"data": [["cat","dog","mouse","moose","rat"],[1,2,3,4],[true,null]]}
+{
+  "data": [
+    [
+      "cat",
+      "dog",
+      "mouse",
+      "moose",
+      "rat"
+    ],
+    [
+      1,
+      2,
+      3,
+      4
+    ],
+    [
+      true,
+      null
+    ]
+  ]
+}

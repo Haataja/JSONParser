@@ -1,5 +1,5 @@
 {
-  "key":{
+  "key": {
     "data": [
       {
         "key": "String",
@@ -26,6 +26,6 @@
         "null": null
       }
     ],
-    "qualifier":null
+    "qualifier": null
   }
 }

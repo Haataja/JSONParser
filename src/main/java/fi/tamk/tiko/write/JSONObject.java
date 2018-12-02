@@ -126,11 +126,15 @@ public class JSONObject {
         } else if (o != this) {
             JSONObject object = (JSONObject) o;
             for (String key : json.keySet()) {
+                System.out.println("Key: " + key + "values: "+ json.get(key)+ " " +object.get(key));
                 if (object.get(key) == null) {
                     if (json.get(key) != null && !json.get(key).equals(object.get(key))) {
                         returned = false;
                         break;
                     }
+                } else if(!json.get(key).equals(object.get(key))){
+                    returned = false;
+                    break;
                 }
             }
         }
