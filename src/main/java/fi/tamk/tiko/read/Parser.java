@@ -47,9 +47,9 @@ public class Parser {
                 if(!split[1].contains("[")){
                     i = parseJsonObject(i, lines, key, returnedObject);
                 } else if(!split[1].contains("{")){
-                    i = parseArray(i, lines, split, key, returnedObject);
+                    i = parseArray(i, lines, key, returnedObject);
                 } else if(split[1].indexOf("[") < split[1].indexOf("{")){
-                    i = parseArray(i, lines, split, key, returnedObject);
+                    i = parseArray(i, lines, key, returnedObject);
                 } else {
                     i = parseJsonObject(i, lines, key,returnedObject);
                 }
@@ -89,11 +89,11 @@ public class Parser {
     }
 
 
-    private int parseArray(int index, String[] lines, String[] split, String key, JSONObject object) {
+    private int parseArray(int index, String[] lines, String key, JSONObject object) {
         JSONArray array = new JSONArray();
         int j = index;
-        lines[j] = lines[j].substring(split[0].length() + 1);
-        lines[j] = lines[j].replace("[", "");
+        int indexOf = lines[j].indexOf("[");
+        lines[j] = lines[j].substring(indexOf + 1);
         boolean loop = true;
         while (loop) {
             if (lines[j].contains("{")) {
@@ -103,8 +103,12 @@ public class Parser {
                 }
             } else if(lines[j].contains("[")){
                 j = parseArray(j,lines,array);
-                if (lines[j].contains("]]")) {
-                    loop = false;
+                if (lines[j].contains("]")) {
+                    int indexOfKet = lines[j].indexOf("]");
+                    lines[j] = lines[j].substring(indexOfKet+1);
+                    if(lines[j].contains("]")){
+                        loop = false;
+                    }
                 }
                 j++;
             }else {
@@ -123,7 +127,8 @@ public class Parser {
     private int parseArray(int index, String[] lines, JSONArray addArray){
         JSONArray array = new JSONArray();
         int j = index;
-        lines[j] = lines[j].replace("[", "");
+        int indexOf = lines[j].indexOf("[");
+        lines[j] = lines[j].substring(indexOf + 1);
         boolean loop = true;
         while (loop) {
             if (lines[j].contains("{")) {
@@ -172,9 +177,9 @@ public class Parser {
                 if(!lines[k].contains("[")){
                     k = parseJsonObject(k, lines, objectKey, object);
                 } else if(!lines[k].contains("{")){
-                    k = parseArray(k, lines, objectSplit, objectKey, object);
+                    k = parseArray(k, lines, objectKey, object);
                 } else if(lines[k].indexOf("[") < lines[k].indexOf("{")){
-                    k = parseArray(k, lines, objectSplit, objectKey, object);
+                    k = parseArray(k, lines, objectKey, object);
                 } else {
                     k = parseJsonObject(k, lines, objectKey,object);
                 }

@@ -13,8 +13,10 @@ public class ParserTest {
 
     private static String basic;
     private static String objectInObject;
+    private static String objectInObjectInObject;
     private static String arrayInObject;
     private static String objectsInArray;
+    private static String arrayInArray;
     private static String wild;
     private static Parser parser;
 
@@ -27,6 +29,8 @@ public class ParserTest {
             arrayInObject = new String(Files.readAllBytes(Paths.get("src\\test\\resources\\arrayInObject.json")));
             objectsInArray = new String(Files.readAllBytes(Paths.get("src\\test\\resources\\objectsInArray.json")));
             wild = new String(Files.readAllBytes(Paths.get("src\\test\\resources\\wild.json")));
+            objectInObjectInObject = new String(Files.readAllBytes(Paths.get("src\\test\\resources\\objectInObjectInObject.json")));
+            arrayInArray = new String(Files.readAllBytes(Paths.get("src\\test\\resources\\arrayInArray.json")));
         } catch (Exception e) {
             System.out.println("Something went wrong: " + e.getMessage());
             e.printStackTrace();
@@ -51,6 +55,24 @@ public class ParserTest {
         JSONObject parsed = parser.parse(objectInObject);
         JSONObject object = new JSONObject();
         object.put("key", "String");
+        object.put("intKey", 44);
+        object.put("doubleKey", 3.17);
+        object.put("booleanKey", true);
+        object.put("boolean", false);
+        object.put("null", null);
+        JSONObject o = new JSONObject();
+        o.put("new_key", object);
+        Assert.assertEquals(parsed, o);
+    }
+
+    @Test
+    public void testObjectInObjectInObject() {
+        JSONObject parsed = parser.parse(objectInObjectInObject);
+        JSONObject innerObject = new JSONObject();
+        innerObject.put("key", null);
+        innerObject.put("cat","dog");
+        JSONObject object = new JSONObject();
+        object.put("key", innerObject);
         object.put("intKey", 44);
         object.put("doubleKey", 3.17);
         object.put("booleanKey", true);
@@ -102,6 +124,31 @@ public class ParserTest {
         JSONObject o = new JSONObject();
         o.put("data", array);
         Assert.assertEquals(o,parsed);
+    }
+
+    @Test
+    public void testArrayInArray(){
+        JSONObject parsed = parser.parse(arrayInArray);
+        JSONArray array1 = new JSONArray();
+        array1.add("cat");
+        array1.add("dog");
+        array1.add("mouse");
+        array1.add("moose");
+        array1.add("rat");
+        JSONArray array2 = new JSONArray();
+        for(int i = 1; i< 5; i++){
+            array2.add(i);
+        }
+        JSONArray array3 = new JSONArray();
+        array3.add(true);
+        array3.add(null);
+        JSONArray master = new JSONArray();
+        master.add(array1);
+        master.add(array2);
+        master.add(array3);
+        JSONObject object = new JSONObject();
+        object.put("data",master);
+        Assert.assertEquals(parsed, object);
     }
 
     @Test
