@@ -33,7 +33,7 @@ public class Parser {
      * @return JSONObject that holds all the objects form the String.
      */
     public JSONObject parse(String text) {
-        text = text.replace("\n", "");
+        text = text.replace(System.getProperty("line.separator"), "");
         text = text.substring(1, text.length() - 1);
         returnedObject = new JSONObject();
         String[] lines = text.split(",");
@@ -43,64 +43,16 @@ public class Parser {
                 split[1] = split[1] + ":" + split[2];
             }
             String key = split[0].replace("\"", "").trim();
-            if (split[1].contains("[")) {
-                JSONArray array = new JSONArray();
-                int j = i;
-                lines[j] = lines[j].substring(split[0].length() + 1);
-                lines[j] = lines[j].replace("[", "");
-                boolean loop = true;
-                while (loop) {
-                    if (lines[j].contains("{")) {
-                        lines[j] = lines[j].replace("{", "");
-                        JSONObject object = new JSONObject();
-                        boolean innerLoop = true;
-                        int k = j;
-                        while (innerLoop) {
-                            if (lines[k].contains("}")) {
-                                innerLoop = false;
-                                lines[k] = lines[k].replace("}", "");
-                                if (lines[k].contains("]")) {
-                                    loop = false;
-                                    lines[k] = lines[k].replace("]", "");
-                                }
-                            }
-                            String[] objectSplit = lines[k].split(":");
-                            String objectKey = objectSplit[0].replace("\"", "").trim();
-                            object.put(objectKey, parseObject(objectSplit[1]));
-                            k++;
-                        }
-                        array.add(object);
-                        j = k;
-                    } else {
-                        if (lines[j].contains("]")) {
-                            lines[j] = lines[j].replace("]", "");
-                            loop = false;
-                        }
-                        array.add(parseObject(lines[j]));
-                        j++;
-                    }
+            if (split[1].contains("[") || split[1].contains("{")) {
+                if(!split[1].contains("[")){
+                    i = parseJsonObject(i, lines, split, key, returnedObject);
+                } else if(!split[1].contains("{")){
+                    i = parseArray(i, lines, split, key, returnedObject);
+                } else if(split[1].indexOf("[") < split[1].indexOf("{")){
+                    i = parseArray(i, lines, split, key, returnedObject);
+                } else {
+                    i = parseJsonObject(i, lines, split, key,returnedObject);
                 }
-                returnedObject.put(key, array);
-                i = j - 1;
-            } else if (lines[i].contains("{")) {
-                lines[i] = lines[i].substring(split[0].length() + 1);
-                lines[i] = lines[i].replace("{", "");
-
-                JSONObject object = new JSONObject();
-                boolean innerLoop = true;
-                int k = i;
-                while (innerLoop) {
-                    if (lines[k].contains("}")) {
-                        innerLoop = false;
-                        lines[k] = lines[k].replace("}", "");
-                    }
-                    String[] objectSplit = lines[k].split(":");
-                    String objectKey = objectSplit[0].replace("\"", "").trim();
-                    object.put(objectKey, parseObject(objectSplit[1]));
-                    k++;
-                }
-                returnedObject.put(key, object);
-                i = k - 1;
             } else {
                 returnedObject.put(key, parseObject(split[1]));
             }
@@ -110,6 +62,7 @@ public class Parser {
 
     private Object parseObject(String value) {
         value = value.trim();
+        value = value.replace("]", "");
         if (value.contains("\"")) {
             return value.replace("\"", "");
         } else if (value.contains("null")) {
@@ -133,5 +86,122 @@ public class Parser {
             }
         }
         return null;
+    }
+
+
+    private int parseArray(int index, String[] lines, String[] split, String key, JSONObject object) {
+        JSONArray array = new JSONArray();
+        int j = index;
+        lines[j] = lines[j].substring(split[0].length() + 1);
+        lines[j] = lines[j].replace("[", "");
+        boolean loop = true;
+        while (loop) {
+            if (lines[j].contains("{")) {
+                j = parseJsonObject(j, lines, array);
+                if (lines[j - 1].contains("]")) {
+                    loop = false;
+                }
+            } else if(lines[j].contains("[")){
+                j = parseArray(j,lines,array);
+                if (lines[j].contains("]]")) {
+                    loop = false;
+                }
+                j++;
+            }else {
+                if (lines[j].contains("]")) {
+                    lines[j] = lines[j].replace("]", "");
+                    loop = false;
+                }
+                array.add(parseObject(lines[j]));
+                j++;
+            }
+        }
+        object.put(key, array);
+        return j - 1;
+    }
+
+    private int parseArray(int index, String[] lines, JSONArray addArray){
+        JSONArray array = new JSONArray();
+        int j = index;
+        lines[j] = lines[j].replace("[", "");
+        boolean loop = true;
+        while (loop) {
+            if (lines[j].contains("{")) {
+                j = parseJsonObject(j, lines, array);
+                if (lines[j - 1].contains("]")) {
+                    loop = false;
+                }
+            } else if(lines[j].contains("[")){
+                j = parseArray(j,lines,array);
+                if (lines[j].contains("]]")) {
+                    loop = false;
+                }
+                j++;
+            }else {
+                if (lines[j].contains("]")) {
+                    //lines[j] = lines[j].replace("]", "");
+                    loop = false;
+                }
+                array.add(parseObject(lines[j]));
+                j++;
+            }
+        }
+        addArray.add(array);
+        return j - 1;
+    }
+
+    private int parseJsonObject(int index, String[] lines, String[] split, String key, JSONObject o) {
+        int i = index;
+        lines[i] = lines[i].substring(split[0].length() + 1);
+        lines[i] = lines[i].replace("{", "");
+
+        JSONObject object = new JSONObject();
+        boolean innerLoop = true;
+        int k = i;
+        while (innerLoop) {
+            if (lines[k].contains("}")) {
+                innerLoop = false;
+                lines[k] = lines[k].replace("}", "");
+            }
+            String[] objectSplit = lines[k].split(":");
+            String objectKey = objectSplit[0].replace("\"", "").trim();
+            if(lines[k].contains("[")){
+                k = parseArray(k,lines,objectSplit,objectKey,object);
+            } else {
+                object.put(objectKey, parseObject(objectSplit[1]));
+            }
+            k++;
+
+        }
+        o.put(key, object);
+        return k - 1;
+    }
+
+    private int parseJsonObject(int index, String[] lines, JSONArray array) {
+        int i = index;
+        lines[i] = lines[i].replace("{", "");
+        JSONObject object = new JSONObject();
+        boolean innerLoop = true;
+        int k = i;
+        while (innerLoop) {
+            if (lines[k].contains("}")) {
+                innerLoop = false;
+                lines[k] = lines[k].replace("}", "");
+            }
+            String[] objectSplit = lines[k].split(":");
+            String objectKey = objectSplit[0].replace("\"", "").trim();
+            if(lines[k].contains("[")){
+
+                k = parseArray(k,lines,objectSplit,objectKey,object);
+                if(lines[k - 1].contains("}")){
+                    innerLoop = false;
+                }
+            } else {
+                object.put(objectKey, parseObject(objectSplit[1]));
+            }
+            k++;
+        }
+        array.add(object);
+        return k;
     }
 }
