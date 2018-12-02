@@ -43,8 +43,7 @@ public class ParserTest {
         object.put("booleanKey", true);
         object.put("boolean", false);
         object.put("null", null);
-        //Assert.assertEquals(object, parsed);
-        Assert.assertTrue(parsed.equals(object));
+        Assert.assertEquals(parsed, object);
     }
 
     @Test
@@ -59,7 +58,7 @@ public class ParserTest {
         object.put("null", null);
         JSONObject o = new JSONObject();
         o.put("new_key", object);
-        Assert.assertEquals(o, parsed);
+        Assert.assertEquals(parsed, o);
     }
 
     @Test

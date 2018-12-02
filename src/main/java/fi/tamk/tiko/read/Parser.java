@@ -45,13 +45,13 @@ public class Parser {
             String key = split[0].replace("\"", "").trim();
             if (split[1].contains("[") || split[1].contains("{")) {
                 if(!split[1].contains("[")){
-                    i = parseJsonObject(i, lines, split, key, returnedObject);
+                    i = parseJsonObject(i, lines, key, returnedObject);
                 } else if(!split[1].contains("{")){
                     i = parseArray(i, lines, split, key, returnedObject);
                 } else if(split[1].indexOf("[") < split[1].indexOf("{")){
                     i = parseArray(i, lines, split, key, returnedObject);
                 } else {
-                    i = parseJsonObject(i, lines, split, key,returnedObject);
+                    i = parseJsonObject(i, lines, key,returnedObject);
                 }
             } else {
                 returnedObject.put(key, parseObject(split[1]));
@@ -139,7 +139,6 @@ public class Parser {
                 j++;
             }else {
                 if (lines[j].contains("]")) {
-                    //lines[j] = lines[j].replace("]", "");
                     loop = false;
                 }
                 array.add(parseObject(lines[j]));
@@ -150,57 +149,51 @@ public class Parser {
         return j - 1;
     }
 
-    private int parseJsonObject(int index, String[] lines, String[] split, String key, JSONObject o) {
-        int i = index;
-        lines[i] = lines[i].substring(split[0].length() + 1);
-        lines[i] = lines[i].replace("{", "");
-
+    private int parseJsonObject(int index, String[] lines, String key, JSONObject o) {
+        int k = index;
+        int indexOf = lines[k].indexOf("{");
+        lines[k] = lines[k].substring(indexOf + 1);
         JSONObject object = new JSONObject();
-        boolean innerLoop = true;
-        int k = i;
-        while (innerLoop) {
-            if (lines[k].contains("}")) {
-                innerLoop = false;
-                lines[k] = lines[k].replace("}", "");
-            }
-            String[] objectSplit = lines[k].split(":");
-            String objectKey = objectSplit[0].replace("\"", "").trim();
-            if(lines[k].contains("[")){
-                k = parseArray(k,lines,objectSplit,objectKey,object);
-            } else {
-                object.put(objectKey, parseObject(objectSplit[1]));
-            }
-            k++;
-
-        }
+        k = writeObject(lines, object, k);
         o.put(key, object);
         return k - 1;
     }
 
-    private int parseJsonObject(int index, String[] lines, JSONArray array) {
-        int i = index;
-        lines[i] = lines[i].replace("{", "");
-        JSONObject object = new JSONObject();
-        boolean innerLoop = true;
-        int k = i;
-        while (innerLoop) {
+    private int writeObject(String[] lines, JSONObject object, int k) {
+        boolean loop = true;
+        while (loop) {
             if (lines[k].contains("}")) {
-                innerLoop = false;
+                loop = false;
                 lines[k] = lines[k].replace("}", "");
             }
             String[] objectSplit = lines[k].split(":");
             String objectKey = objectSplit[0].replace("\"", "").trim();
-            if(lines[k].contains("[")){
-
-                k = parseArray(k,lines,objectSplit,objectKey,object);
-                if(lines[k - 1].contains("}")){
-                    innerLoop = false;
+            if(lines[k].contains("[") || lines[k].contains("{")){
+                if(!lines[k].contains("[")){
+                    k = parseJsonObject(k, lines, objectKey, object);
+                } else if(!lines[k].contains("{")){
+                    k = parseArray(k, lines, objectSplit, objectKey, object);
+                } else if(lines[k].indexOf("[") < lines[k].indexOf("{")){
+                    k = parseArray(k, lines, objectSplit, objectKey, object);
+                } else {
+                    k = parseJsonObject(k, lines, objectKey,object);
                 }
             } else {
                 object.put(objectKey, parseObject(objectSplit[1]));
             }
             k++;
+
         }
+        return k;
+    }
+
+    private int parseJsonObject(int index, String[] lines, JSONArray array) {
+        int i = index;
+        int indexOf = lines[i].indexOf("{");
+        lines[i] = lines[i].substring(indexOf + 1);
+        JSONObject object = new JSONObject();
+        int k = i;
+        k = writeObject(lines, object, k);
         array.add(object);
         return k;
     }
