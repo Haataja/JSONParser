@@ -44,14 +44,14 @@ public class Parser {
             }
             String key = split[0].replace("\"", "").trim();
             if (split[1].contains("[") || split[1].contains("{")) {
-                if(!split[1].contains("[")){
+                if (!split[1].contains("[")) {
                     i = parseJsonObject(i, lines, key, returnedObject);
-                } else if(!split[1].contains("{")){
+                } else if (!split[1].contains("{")) {
                     i = parseArray(i, lines, key, returnedObject);
-                } else if(split[1].indexOf("[") < split[1].indexOf("{")){
+                } else if (split[1].indexOf("[") < split[1].indexOf("{")) {
                     i = parseArray(i, lines, key, returnedObject);
                 } else {
-                    i = parseJsonObject(i, lines, key,returnedObject);
+                    i = parseJsonObject(i, lines, key, returnedObject);
                 }
             } else {
                 returnedObject.put(key, parseObject(split[1]));
@@ -101,17 +101,17 @@ public class Parser {
                 if (lines[j - 1].contains("]")) {
                     loop = false;
                 }
-            } else if(lines[j].contains("[")){
-                j = parseArray(j,lines,array);
+            } else if (lines[j].contains("[")) {
+                j = parseArray(j, lines, array);
                 if (lines[j].contains("]")) {
                     int indexOfKet = lines[j].indexOf("]");
-                    lines[j] = lines[j].substring(indexOfKet+1);
-                    if(lines[j].contains("]")){
+                    lines[j] = lines[j].substring(indexOfKet + 1);
+                    if (lines[j].contains("]")) {
                         loop = false;
                     }
                 }
                 j++;
-            }else {
+            } else {
                 if (lines[j].contains("]")) {
                     lines[j] = lines[j].replace("]", "");
                     loop = false;
@@ -124,7 +124,7 @@ public class Parser {
         return j - 1;
     }
 
-    private int parseArray(int index, String[] lines, JSONArray addArray){
+    private int parseArray(int index, String[] lines, JSONArray addArray) {
         JSONArray array = new JSONArray();
         int j = index;
         int indexOf = lines[j].indexOf("[");
@@ -136,13 +136,13 @@ public class Parser {
                 if (lines[j - 1].contains("]")) {
                     loop = false;
                 }
-            } else if(lines[j].contains("[")){
-                j = parseArray(j,lines,array);
+            } else if (lines[j].contains("[")) {
+                j = parseArray(j, lines, array);
                 if (lines[j].contains("]]")) {
                     loop = false;
                 }
                 j++;
-            }else {
+            } else {
                 if (lines[j].contains("]")) {
                     loop = false;
                 }
@@ -173,15 +173,15 @@ public class Parser {
             }
             String[] objectSplit = lines[k].split(":");
             String objectKey = objectSplit[0].replace("\"", "").trim();
-            if(lines[k].contains("[") || lines[k].contains("{")){
-                if(!lines[k].contains("[")){
+            if (lines[k].contains("[") || lines[k].contains("{")) {
+                if (!lines[k].contains("[")) {
                     k = parseJsonObject(k, lines, objectKey, object);
-                } else if(!lines[k].contains("{")){
+                } else if (!lines[k].contains("{")) {
                     k = parseArray(k, lines, objectKey, object);
-                } else if(lines[k].indexOf("[") < lines[k].indexOf("{")){
+                } else if (lines[k].indexOf("[") < lines[k].indexOf("{")) {
                     k = parseArray(k, lines, objectKey, object);
                 } else {
-                    k = parseJsonObject(k, lines, objectKey,object);
+                    k = parseJsonObject(k, lines, objectKey, object);
                 }
             } else {
                 object.put(objectKey, parseObject(objectSplit[1]));

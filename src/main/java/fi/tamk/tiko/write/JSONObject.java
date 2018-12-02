@@ -121,13 +121,13 @@ public class JSONObject {
     @Override
     public boolean equals(Object o) {
         boolean returned = true;
-        if (o == null || getClass() != o.getClass()){
+        if (o == null || getClass() != o.getClass()) {
             returned = false;
         } else if (o != this) {
             JSONObject object = (JSONObject) o;
             for (String key : json.keySet()) {
                 if (object.get(key) == null) {
-                    if(json.get(key) != null && !json.get(key).equals(object.get(key))){
+                    if (json.get(key) != null && !json.get(key).equals(object.get(key))) {
                         returned = false;
                         break;
                     }

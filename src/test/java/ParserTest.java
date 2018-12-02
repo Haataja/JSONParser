@@ -17,8 +17,10 @@ public class ParserTest {
     private static String arrayInObject;
     private static String objectsInArray;
     private static String arrayInArray;
+    private static String objectInArrayInObject;
     private static String wild;
     private static Parser parser;
+    private static JSONObject objectInArray;
 
     @BeforeClass
     public static void before() {
@@ -31,10 +33,26 @@ public class ParserTest {
             wild = new String(Files.readAllBytes(Paths.get("src\\test\\resources\\wild.json")));
             objectInObjectInObject = new String(Files.readAllBytes(Paths.get("src\\test\\resources\\objectInObjectInObject.json")));
             arrayInArray = new String(Files.readAllBytes(Paths.get("src\\test\\resources\\arrayInArray.json")));
+            objectInArrayInObject = new String(Files.readAllBytes(Paths.get("src\\test\\resources\\objectInArrayInObject.json")));
         } catch (Exception e) {
             System.out.println("Something went wrong: " + e.getMessage());
             e.printStackTrace();
         }
+
+        JSONArray array = new JSONArray();
+        JSONObject object = new JSONObject();
+        object.put("key", "String");
+        object.put("intKey", 44);
+        object.put("doubleKey", 3.17);
+        object.put("booleanKey", true);
+        object.put("boolean", false);
+        object.put("null", null);
+        array.add(object);
+        array.add(object);
+        array.add(object);
+        JSONObject o = new JSONObject();
+        o.put("data", array);
+        objectInArray = o;
     }
 
     @Test
@@ -70,7 +88,7 @@ public class ParserTest {
         JSONObject parsed = parser.parse(objectInObjectInObject);
         JSONObject innerObject = new JSONObject();
         innerObject.put("key", null);
-        innerObject.put("cat","dog");
+        innerObject.put("cat", "dog");
         JSONObject object = new JSONObject();
         object.put("key", innerObject);
         object.put("intKey", 44);
@@ -110,24 +128,11 @@ public class ParserTest {
     @Test
     public void testObjectsInArray() {
         JSONObject parsed = parser.parse(objectsInArray);
-        JSONArray array = new JSONArray();
-        JSONObject object = new JSONObject();
-        object.put("key", "String");
-        object.put("intKey", 44);
-        object.put("doubleKey", 3.17);
-        object.put("booleanKey", true);
-        object.put("boolean", false);
-        object.put("null", null);
-        array.add(object);
-        array.add(object);
-        array.add(object);
-        JSONObject o = new JSONObject();
-        o.put("data", array);
-        Assert.assertEquals(o,parsed);
+        Assert.assertEquals(objectInArray, parsed);
     }
 
     @Test
-    public void testArrayInArray(){
+    public void testArrayInArray() {
         JSONObject parsed = parser.parse(arrayInArray);
         JSONArray array1 = new JSONArray();
         array1.add("cat");
@@ -136,7 +141,7 @@ public class ParserTest {
         array1.add("moose");
         array1.add("rat");
         JSONArray array2 = new JSONArray();
-        for(int i = 1; i< 5; i++){
+        for (int i = 1; i < 5; i++) {
             array2.add(i);
         }
         JSONArray array3 = new JSONArray();
@@ -147,12 +152,49 @@ public class ParserTest {
         master.add(array2);
         master.add(array3);
         JSONObject object = new JSONObject();
-        object.put("data",master);
+        object.put("data", master);
         Assert.assertEquals(parsed, object);
     }
 
     @Test
-    public void testWild() {
+    public void testArrayInArrayInArray() {
+        JSONObject parsed = parser.parse(arrayInArray);
+        JSONArray array0 = new JSONArray();
+        array0.add(1.2);
+        array0.add(1.1);
+        JSONArray array1 = new JSONArray();
+        array1.add(array0);
+        array1.add("dog");
+        array1.add("mouse");
+        array1.add("moose");
+        array1.add("rat");
+        JSONArray array2 = new JSONArray();
+        for (int i = 1; i < 5; i++) {
+            array2.add(i);
+        }
+        JSONArray array3 = new JSONArray();
+        array3.add(true);
+        array3.add(array0);
+        JSONArray master = new JSONArray();
+        master.add(array1);
+        master.add(array2);
+        master.add(array3);
+        JSONObject object = new JSONObject();
+        object.put("data", master);
+        Assert.assertEquals(parsed, object);
+    }
+
+    @Test
+    public void testObjectInArrayInObject() {
+        JSONObject parsed = parser.parse(objectInArrayInObject);
+        JSONObject object = new JSONObject();
+        objectInArray.put("qualifier", null);
+        object.put("key", objectInArray);
+        Assert.assertEquals(object, parsed);
+    }
+
+    @Test
+    public void testArrayInObjectInArray() {
         JSONObject parsed = parser.parse(wild);
         JSONObject data = new JSONObject();
         JSONArray intArray = new JSONArray();

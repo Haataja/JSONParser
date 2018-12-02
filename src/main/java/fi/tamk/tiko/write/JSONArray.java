@@ -22,6 +22,7 @@ public class JSONArray {
 
     /**
      * Adds object to JSONArray.
+     *
      * @param o Object to be added.
      */
     public void add(Object o) {
@@ -30,6 +31,7 @@ public class JSONArray {
 
     /**
      * Get the object from JSONArray by the index.
+     *
      * @param index index of the object desired.
      * @return The object in the JSONArray.
      */
@@ -39,6 +41,7 @@ public class JSONArray {
 
     /**
      * Returns the {@link String} representation of the JSONArray.
+     *
      * @return String representation.
      */
     public String toString() {
@@ -65,9 +68,10 @@ public class JSONArray {
 
     /**
      * Returns the length of the JSONArray.
+     *
      * @return the size of the JSONArray.
      */
-    public int length(){
+    public int length() {
         return arrayList.size();
     }
 }
