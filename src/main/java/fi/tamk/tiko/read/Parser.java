@@ -81,6 +81,7 @@ public class Parser {
                         return valueBoolean;
                     } catch (Exception er) {
                         System.out.println("Unknown error: " + ex.getMessage());
+                        ex.printStackTrace();
                     }
                 }
             }
@@ -94,32 +95,7 @@ public class Parser {
         int j = index;
         int indexOf = lines[j].indexOf("[");
         lines[j] = lines[j].substring(indexOf + 1);
-        boolean loop = true;
-        while (loop) {
-            if (lines[j].contains("{")) {
-                j = parseJsonObject(j, lines, array);
-                if (lines[j - 1].contains("]")) {
-                    loop = false;
-                }
-            } else if (lines[j].contains("[")) {
-                j = parseArray(j, lines, array);
-                if (lines[j].contains("]")) {
-                    int indexOfKet = lines[j].indexOf("]");
-                    lines[j] = lines[j].substring(indexOfKet + 1);
-                    if (lines[j].contains("]")) {
-                        loop = false;
-                    }
-                }
-                j++;
-            } else {
-                if (lines[j].contains("]")) {
-                    lines[j] = lines[j].replace("]", "");
-                    loop = false;
-                }
-                array.add(parseObject(lines[j]));
-                j++;
-            }
-        }
+        j = writeArray(lines, array, j);
         object.put(key, array);
         return j - 1;
     }
@@ -129,6 +105,12 @@ public class Parser {
         int j = index;
         int indexOf = lines[j].indexOf("[");
         lines[j] = lines[j].substring(indexOf + 1);
+        j = writeArray(lines, array, j);
+        addArray.add(array);
+        return j - 1;
+    }
+
+    private int writeArray(String[] lines, JSONArray array, int j) {
         boolean loop = true;
         while (loop) {
             if (lines[j].contains("{")) {
@@ -154,8 +136,7 @@ public class Parser {
                 j++;
             }
         }
-        addArray.add(array);
-        return j - 1;
+        return j;
     }
 
     private int parseJsonObject(int index, String[] lines, String key, JSONObject o) {
@@ -166,6 +147,16 @@ public class Parser {
         k = writeObject(lines, object, k);
         o.put(key, object);
         return k - 1;
+    }
+
+    private int parseJsonObject(int index, String[] lines, JSONArray array) {
+        int i = index;
+        int indexOf = lines[i].indexOf("{");
+        lines[i] = lines[i].substring(indexOf + 1);
+        JSONObject object = new JSONObject();
+        i = writeObject(lines, object, i);
+        array.add(object);
+        return i;
     }
 
     private int writeObject(String[] lines, JSONObject object, int k) {
@@ -193,17 +184,6 @@ public class Parser {
             k++;
 
         }
-        return k;
-    }
-
-    private int parseJsonObject(int index, String[] lines, JSONArray array) {
-        int i = index;
-        int indexOf = lines[i].indexOf("{");
-        lines[i] = lines[i].substring(indexOf + 1);
-        JSONObject object = new JSONObject();
-        int k = i;
-        k = writeObject(lines, object, k);
-        array.add(object);
         return k;
     }
 }
