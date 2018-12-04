@@ -20,7 +20,7 @@ import fi.tamk.tiko.write.JSONObject;
  * JSONObject call {@link JSONObject#get(String)}, e.g. boolean value = (boolean) object.get("key");
  *
  * @author Hanna Haataja, hanna.haataja@cs.tamk.fi
- * @version 1.1, 12/01/2018
+ * @version 2.0, 12/01/2018
  * @since 1.0
  */
 public class Parser {

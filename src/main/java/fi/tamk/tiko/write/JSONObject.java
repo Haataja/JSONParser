@@ -26,7 +26,7 @@ import java.util.Map;
  * {@link JSONArray} or JSONObject, e.g. boolean value = (boolean) object.get("key");
  *
  * @author Hanna Haataja, hanna.haataja@cs.tamk.fi
- * @version 1.0, 11/20/2018
+ * @version 2.0, 12/04/2018
  * @since 1.0
  */
 public class JSONObject {

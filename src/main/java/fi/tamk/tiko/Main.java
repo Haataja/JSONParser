@@ -34,9 +34,9 @@ public class Main {
         System.out.println(owner.toJsonString());
 
 
-        */String text = "";
+        String text = "";
         try{
-            text = new String(Files.readAllBytes(Paths.get(ClassLoader.getSystemResource("jotain.json").toURI())));
+            text = new String(Files.readAllBytes(Paths.get(ClassLoader.getSystemResource("multi.json").toURI())));
         } catch (Exception e){
             System.out.println("Kettu ");
             e.printStackTrace();
@@ -48,8 +48,8 @@ public class Main {
         /*for(String key:object.getJson().keySet()){
             System.out.print(key + " : ");
             System.out.println(object.get(key));
-        }*/
-        System.out.println(object.toJsonString());
+        }
+        System.out.println(object.toJsonString());*/
         //System.out.println(object.get("organization"));
         //for(int i = 0; i < ((JSONArray) object.get("studentNumbers")).length(); i++){
             //System.out.println(((JSONArray) object.get("studentnumbers")).get(i));
